@@ -65,18 +65,8 @@ export const TEST_COMMAND = {
   type: 1,
 };
 
-// Command containing options
-export const CHALLENGE_COMMAND = {
-  name: "challenge",
-  description: "Challenge to a match of rock paper scissors",
-  options: [
-    {
-      type: 3,
-      name: "object",
-      description: "Pick your object",
-      required: true,
-      choices: createCommandChoices(),
-    },
-  ],
+export const SPELL_COMMAND = {
+  name: "spell",
+  description: "Spell Search",
   type: 1,
-};
+}

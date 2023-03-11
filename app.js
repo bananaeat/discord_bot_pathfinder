@@ -56,6 +56,17 @@ app.post('/interactions', async function (req, res) {
         },
       });
     }
+    
+    if (name === 'spell') {
+      // Send a message into the channel where command was triggered from
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          // Fetches a random emoji to send from a helper function
+          content: 'Spell Search ' + getRandomEmoji(),
+        },
+      });
+    }
   }
 });
 
@@ -65,6 +76,5 @@ app.listen(PORT, () => {
   // Check if guild commands from commands.json are installed (if not, install them)
   HasGuildCommands(process.env.APP_ID, process.env.GUILD_ID, [
     TEST_COMMAND,
-    CHALLENGE_COMMAND,
   ]);
 });
