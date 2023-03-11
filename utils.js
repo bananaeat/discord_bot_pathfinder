@@ -72,14 +72,19 @@ export function SpellDataFormatter(spell) {
   var range = "";
   if(spell['range']['units'] in ['touch', 'personal', 'close', 'medium', 'long'])
     range = spell['range']['units']
-  else if()
+  else
+    range = spell['range']['value'] + ' ' + spell['range']['units']
   
   return spell['name'] + '\n' +
           '**学派** ' + spell['school'] + '\n' +
           '**等级** ' + spell_level + '\n' +
           '**动作** ' + spell['action']['cost'] + ' ' + spell['action']['type'] + '\n' +
           '**成分** ' + components + '\n' +
-          '**距离** ' + components + '\n';
+          '**距离** ' + range + '\n' +
+          (spell['effect'] != '' ? '**效果** ' + spell['effect'] + '\n' : '') + 
+          (spell['target'] != '' ? '**目标** ' + spell['target'] + '\n' : '') +
+          '**持续时间** ' + spell['duration'] + '\n' + 
+          '**豁免** ' + spell['save'] + '\n' + ;
           
 }
 
