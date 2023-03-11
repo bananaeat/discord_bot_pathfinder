@@ -39,55 +39,59 @@ export async function DiscordRequest(endpoint, options) {
 }
 
 export function SearchDatabase(key, database) {
-  var spell = {name: null};
+  var spell = []
   database.forEach(function(d){
-    if(d["name"] == key)
-      spell = d;
+    if(d["name"].includes(key))
+      spell.push(d);
   });
   // return original response
   return spell;
 }
 
-export function SpellDataFormatter(spell) {
-  // String for spell level
-  var spell_level = "";
-  spell['classes'].forEach(function(c){
-    spell_level += c[0] + ' ' + c[1] + ', '
-  })
-  spell_level = spell_level.substring(0,spell_level.length-2);
-  
-  //String for components
-  var components = "";
-  Object.keys(spell['components']).forEach(function(c){
-    if(c != 'materials')
-      components += c + ', '
+export function SpellDataFormatter(spellArray) {
+  var spells = ""
+  spellArray.slice(0, 5).forEach(function(spell){
+    // String for spell level
+    var spell_level = "";
+    spell['classes'].forEach(function(c){
+      spell_level += c[0] + ' ' + c[1] + ', '
+    })
+    spell_level = spell_level.substring(0,spell_level.length-2);
+
+    //String for components
+    var components = "";
+    Object.keys(spell['components']).forEach(function(c){
+      if(c != 'materials')
+        components += c + ', '
+      else
+        components += c + '(' + spell['materials']['value'] + 
+          ('gpValue' in spell['materials'] ? (', ' + spell['materials']['gpValue'] + 'gp')
+        : '') + ')' + ', '
+    })
+    components = components.substring(0,components.length-2);
+
+    //String for range
+    var range = "";
+    if(spell['range']['units'] == 'touch' || spell['range']['units'] == 'personal' ||
+       spell['range']['units'] == 'close' || spell['range']['units'] == 'medium' || spell['range']['units'] == 'long')
+      range = spell['range']['units']
     else
-      components += c + '(' + spell['materials']['value'] + 
-        ('gpValue' in spell['materials'] ? (', ' + spell['materials']['gpValue'] + 'gp')
-      : '') + ')' + ', '
-  })
-  components = components.substring(0,components.length-2);
-  
-  //String for range
-  var range = "";
-  if(spell['range']['units'] == 'touch' || spell['range']['units'] == 'personal' ||
-     spell['range']['units'] == 'close' || spell['range']['units'] == 'medium' || spell['range']['units'] == 'long')
-    range = spell['range']['units']
-  else
-    range = spell['range']['value'] + ' ' + spell['range']['units']
-  
-  return spell['name'] + '\n' +
-          '**学派** ' + spell['school'] + '\n' +
-          '**等级** ' + spell_level + '\n' +
-          '**动作** ' + spell['action']['cost'] + ' ' + spell['action']['type'] + '\n' +
-          '**成分** ' + components + '\n' +
-          '**距离** ' + range + '\n' +
-          (spell['effect'] != '' ? '**效果** ' + spell['effect'] + '\n' : '') + 
-          (spell['target'] != '' ? '**目标** ' + spell['target'] + '\n' : '') +
-          '**持续时间** ' + spell['duration'] + '\n' + 
-          (spell['save'] != '' ? '**豁免** ' + spell['save'] + '\n' : '') + 
-          (spell['sr'] != '' ? '**法术抗力** ' + spell['sr'] + '\n' : '') +
-          spell['shortDescription'];
+      range = spell['range']['value'] + ' ' + spell['range']['units']
+
+    spells += spell['name'] + '\n' +
+            '**学派** ' + spell['school'] + '\n' +
+            '**等级** ' + spell_level + '\n' +
+            '**动作** ' + spell['action']['cost'] + ' ' + spell['action']['type'] + '\n' +
+            '**成分** ' + components + '\n' +
+            '**距离** ' + range + '\n' +
+            (spell['effect'] != '' ? '**效果** ' + spell['effect'] + '\n' : '') + 
+            (spell['target'] != '' ? '**目标** ' + spell['target'] + '\n' : '') +
+            '**持续时间** ' + spell['duration'] + '\n' + 
+            (spell['save'] != '' ? '**豁免** ' + spell['save'] + '\n' : '') + 
+            (spell['sr'] != '' ? '**法术抗力** ' + spell['sr'] + '\n' : '') +
+            spell['shortDescription'] + '\n\n';
+  });
+  return spells;
 }
 
 // Simple method that returns a random emoji from list
