@@ -12,6 +12,12 @@ import {
   DiscordRequest,
 } from "./utils.js"
 import { SPELL_COMMAND, TEST_COMMAND, HasGuildCommands } from "./commands.js";
+import { readFile } from 'fs/promises';
+const json = JSON.parse(
+  await readFile(
+    new URL('./some-file.json', import.meta.url)
+  )
+);
 
 // Create an express app
 const app = express();
@@ -21,7 +27,7 @@ const PORT = process.env.PORT || 3000;
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
 // Store for in-progress games. In production, you'd want to use a DB
-const activeGames = {};
+const spells_database = require('./spells.json');
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -58,10 +64,11 @@ app.post("/interactions", async function (req, res) {
 
     if (name === "spell") {
       // Send a message into the channel where command was triggered from
+      const spell_name = data.options[0].value;
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: "Spell Search " + JSON.stringify(data),
+          content: "Spell Search " + data.options[0].value,
         },
       });
     }

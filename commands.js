@@ -18,12 +18,15 @@ async function HasGuildCommand(appId, guildId, command) {
     if (data) {
       const installedNames = data.map((c) => c["name"]);
       // This is just matching on the name, so it's not good for updates
-      if (!installedNames.includes(command["name"])) {
-        console.log(`Installing "${command["name"]}"`);
-        InstallGuildCommand(appId, guildId, command);
-      } else {
-        console.log(`"${command["name"]}" command already installed`);
-      }
+      // if (!installedNames.includes(command["name"])) {
+      //   console.log(`Installing "${command["name"]}"`);
+      //   InstallGuildCommand(appId, guildId, command);
+      // } else {
+      //   console.log(`"${command["name"]}" command already installed`);
+      //   UpdateGuildCommand(appId, guildId, command);
+      // }
+      console.log(`Installing "${command["name"]}"`);
+      InstallGuildCommand(appId, guildId, command);
     }
   } catch (err) {
     console.error(err);
@@ -55,7 +58,7 @@ export const SPELL_COMMAND = {
   type: 1,
   options: [
     {
-      name: "Spell Name",
+      name: "spell_name",
       description: "The name of the spell",
       type: 3,
       required: true,
