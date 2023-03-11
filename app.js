@@ -10,14 +10,12 @@ import {
   VerifyDiscordRequest,
   getRandomEmoji,
   DiscordRequest,
+  SearchDatabase
 } from "./utils.js"
 import { SPELL_COMMAND, TEST_COMMAND, HasGuildCommands } from "./commands.js";
-import { readFile } from 'fs/promises';
-const json = JSON.parse(
-  await readFile(
-    new URL('./some-file.json', import.meta.url)
-  )
-);
+import { createRequire } from "module";
+
+
 
 // Create an express app
 const app = express();
@@ -26,8 +24,8 @@ const PORT = process.env.PORT || 3000;
 // Parse request body and verifies incoming requests using discord-interactions package
 app.use(express.json({ verify: VerifyDiscordRequest(process.env.PUBLIC_KEY) }));
 
-// Store for in-progress games. In production, you'd want to use a DB
-const spells_database = require('./spells.json');
+const require = createRequire(import.meta.url);
+const spells_database = require("./spells.json");
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -65,10 +63,11 @@ app.post("/interactions", async function (req, res) {
     if (name === "spell") {
       // Send a message into the channel where command was triggered from
       const spell_name = data.options[0].value;
+      // console.log(SearchDatabase(spells_database, spell_name));
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: "Spell Search " + data.options[0].value,
+          content: "Spell Search " + JSON.stringify(spells_database[10]),
         },
       });
     }

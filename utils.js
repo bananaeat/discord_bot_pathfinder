@@ -38,6 +38,15 @@ export async function DiscordRequest(endpoint, options) {
   return res;
 }
 
+export function SearchDatabase(key, database) {
+  database.forEach(function(d){
+    if(d["name"] == key)
+      return d;
+  });
+  // return original response
+  return {name: null};
+}
+
 // Simple method that returns a random emoji from list
 export function getRandomEmoji() {
   const emojiList = ['😭','😄','😌','🤓','😎','😤','🤖','😶‍🌫️','🌏','📸','💿','👋','🌊','✨'];
