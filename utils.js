@@ -70,7 +70,8 @@ export function SpellDataFormatter(spell) {
   
   //String for range
   var range = "";
-  if(spell['range']['units'] in ['touch', 'personal', 'close', 'medium', 'long'])
+  if(spell['range']['units'] == 'touch' || spell['range']['units'] == 'personal' ||
+     spell['range']['units'] == 'close' || spell['range']['units'] == 'medium' || spell['range']['units'] == 'long')
     range = spell['range']['units']
   else
     range = spell['range']['value'] + ' ' + spell['range']['units']
@@ -84,8 +85,9 @@ export function SpellDataFormatter(spell) {
           (spell['effect'] != '' ? '**效果** ' + spell['effect'] + '\n' : '') + 
           (spell['target'] != '' ? '**目标** ' + spell['target'] + '\n' : '') +
           '**持续时间** ' + spell['duration'] + '\n' + 
-          '**豁免** ' + spell['save'] + '\n' + ;
-          
+          (spell['save'] != '' ? '**豁免** ' + spell['save'] + '\n' : '') + 
+          (spell['sr'] != '' ? '**法术抗力** ' + spell['sr'] + '\n' : '') +
+          spell['shortDescription'];
 }
 
 // Simple method that returns a random emoji from list
