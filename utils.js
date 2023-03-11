@@ -51,14 +51,35 @@ export function SearchDatabase(key, database) {
 export function SpellDataFormatter(spell) {
   // String for spell level
   var spell_level = "";
-  spell['source']['classes'].forEach(function(c){
+  spell['source']['class'].forEach(function(c){
     spell_level += c[0] + ' ' + c[1] + ', '
   })
   spell_level = spell_level.substring(0,spell_level.length-2);
   
+  //String for components
+  var components = "";
+  Object.keys(spell['components']).forEach(function(c){
+    if(c != 'materials')
+      components += c + ', '
+    else
+      components += c + '(' + spell['materials']['value'] + 
+        ('gpValue' in spell['materials'] ? (', ' + spell['materials']['gpValue'] + 'gp')
+      : '') + ')' + ', '
+  })
+  components = components.substring(0,components.length-2);
+  
+  //String for range
+  var range = "";
+  if(spell['range']['units'] in ['touch', 'personal', 'close', 'medium', 'long'])
+    range = spell['range']['units']
+  else if()
+  
   return spell['name'] + '\n' +
-          'School ' + spell['school'] + '\n' +
-          'Level ' + spell_level + '\n' +
+          '**学派** ' + spell['school'] + '\n' +
+          '**等级** ' + spell_level + '\n' +
+          '**动作** ' + spell['action']['cost'] + ' ' + spell['action']['type'] + '\n' +
+          '**成分** ' + components + '\n' +
+          '**距离** ' + components + '\n';
           
 }
 

@@ -10,7 +10,8 @@ import {
   VerifyDiscordRequest,
   getRandomEmoji,
   DiscordRequest,
-  SearchDatabase
+  SearchDatabase,
+  SpellDataFormatter
 } from "./utils.js"
 import { SPELL_COMMAND, TEST_COMMAND, HasGuildCommands } from "./commands.js";
 import { createRequire } from "module";
@@ -68,7 +69,7 @@ app.post("/interactions", async function (req, res) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: spell["name"],
+          content: SpellDataFormatter(spell),
         },
       });
     }
