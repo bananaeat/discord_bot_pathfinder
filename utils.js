@@ -51,7 +51,7 @@ export function SearchDatabase(key, database) {
 export function SpellDataFormatter(spell) {
   // String for spell level
   var spell_level = "";
-  spell['source']['class'].forEach(function(c){
+  spell['classes'].forEach(function(c){
     spell_level += c[0] + ' ' + c[1] + ', '
   })
   spell_level = spell_level.substring(0,spell_level.length-2);
