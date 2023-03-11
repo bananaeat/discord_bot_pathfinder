@@ -53,12 +53,12 @@ export const SPELL_COMMAND = {
   name: "spell",
   description: "Spell Search",
   type: 1,
-  "options": [
-        {
-            "name": "Spell Name",
-            "description": "The name of the animal",
-            "type": 3,
-            "required": true,
-        },
-    ]
-}
+  options: [
+    {
+      name: "Spell Name",
+      description: "The name of the spell",
+      type: 3,
+      required: true,
+    },
+  ],
+};
