@@ -39,12 +39,27 @@ export async function DiscordRequest(endpoint, options) {
 }
 
 export function SearchDatabase(key, database) {
+  var spell = {name: null};
   database.forEach(function(d){
     if(d["name"] == key)
-      return d;
+      spell = d;
   });
   // return original response
-  return {name: null};
+  return spell;
+}
+
+export function SpellDataFormatter(spell) {
+  // String for spell level
+  var spell_level = "";
+  spell['source']['classes'].forEach(function(c){
+    spell_level += c[0] + ' ' + c[1] + ', '
+  })
+  spell_level = spell_level.substring(0,spell_level.length-2);
+  
+  return spell['name'] + '\n' +
+          'School ' + spell['school'] + '\n' +
+          'Level ' + spell_level + '\n' +
+          
 }
 
 // Simple method that returns a random emoji from list

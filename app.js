@@ -63,11 +63,12 @@ app.post("/interactions", async function (req, res) {
     if (name === "spell") {
       // Send a message into the channel where command was triggered from
       const spell_name = data.options[0].value;
+      const spell = SearchDatabase(spell_name, spells_database)
       // console.log(SearchDatabase(spells_database, spell_name));
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: "Spell Search " + JSON.stringify(spells_database[10]),
+          content: spell["name"],
         },
       });
     }
