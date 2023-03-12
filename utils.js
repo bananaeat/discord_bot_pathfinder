@@ -51,7 +51,7 @@ export function SearchDatabase(key, database) {
 export function SpellDataFormatter(spellArray) {
   var spells = ""
   spellArray.slice(0, 5).forEach(function(spell){
-    // String for spell level
+    //String for spell level
     var spell_level = "";
     spell['classes'].forEach(function(c){
       spell_level += c[0] + ' ' + c[1] + ', '
@@ -89,8 +89,10 @@ export function SpellDataFormatter(spellArray) {
     if(domain.length > 0)
       domain = domain.substring(0, domain.length-2)
 
-    spells += '**' + spell['name'] + '**\n' +
-            '**学派** ' + spell['school'] + (spell['subschool'] != '' ? '[' + spell['subschool'] + ']' : '') + '\n' +
+    spells += '<span style="color:blue">**' + spell['name'] + '**</span>\n' +
+            '**学派** ' + spell['school'] + (spell['subschool'] != '' ? '(' + spell['subschool'] + ')' : '') + 
+                                           (spell['types'] != '' ? '[' + spell['types'] + ']' : '') + '\n' +
+            (domain != '' ? '**领域** ' + domain + '\n' : '') + 
             '**等级** ' + spell_level + '\n' +
             '**动作** ' + spell['action']['cost'] + ' ' + spell['action']['type'] + '\n' +
             '**成分** ' + components + '\n' +
