@@ -76,9 +76,21 @@ export function SpellDataFormatter(spellArray) {
       range = spell['range']['units']
     else
       range = spell['range']['value'] + ' ' + spell['range']['units']
+    
+    //String for subschool
+    var subschool = ""
+    if(spell['subschool'] != '')
+      subschool += '[' + spell['subschool'] + ']'
+    
+    //String for domain
+    var domain = ""
+    spell['domain'].forEach(function(d){domain += d[0] + ' ' + d[1] + ', '})
+    spell['subDomain'].forEach(function(d){domain += d[0] + ' ' + d[1] + ', '})
+    if(domain.length > 0)
+      domain = domain.substring(0, domain.length-2)
 
     spells += '**' + spell['name'] + '**\n' +
-            '**学派** ' + spell['school'] + '\n' +
+            '**学派** ' + spell['school'] + (spell['subschool'] != '' ? '[' + spell['subschool'] + ']' : '') + '\n' +
             '**等级** ' + spell_level + '\n' +
             '**动作** ' + spell['action']['cost'] + ' ' + spell['action']['type'] + '\n' +
             '**成分** ' + components + '\n' +
@@ -88,7 +100,7 @@ export function SpellDataFormatter(spellArray) {
             (spell['target'] != '' ? '**目标** ' + spell['target'] + '\n' : '') +
             '**持续时间** ' + spell['duration'] + '\n' + 
             (spell['save'] != '' ? '**豁免** ' + spell['save'] + '\n' : '') + 
-            (spell['sr'] != '' ? '**法术抗力** ' + spell['sr'] + '\n' : '') +
+            '**法术抗力** ' + (spell['sr'] != '' ? '可' : '否') + '\n' +
             spell['shortDescription'] + '\n\n';
   });
   return spells;
