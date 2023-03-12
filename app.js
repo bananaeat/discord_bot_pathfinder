@@ -29,34 +29,32 @@ const client = new Discord.Client({
 });
 
 client.on("messageCreate", message => {
-  if(message.author.bot == false){
-    const m = message.content;
-    if(m.startsWith('!')){
-      if(m.startsWith('!spell')){
-        const args = m.split(' ');
-        if(args.length < 2){
-          message.reply("命令格式不正确！");
-          return;
-        }
-        const spell_name = args[1];
-        const spell = SearchDatabase(spell_name, spells_database);
-        const reply = spell.length == 0 ? 'Spell not found' : SpellDataFormatter(spell);
-        message.reply(reply);
+  const m = message.content;
+  if(m.startsWith('!')){
+    if(m.startsWith('!spell')){
+      const args = m.split(' ');
+      if(args.length < 2){
+        message.reply("命令格式不正确！");
+        return;
       }
-      
-      if(m.startsWith('!dice')){
-        const args = m.split(' ');
-        if(args.length < 2){
-          message.reply("命令格式不正确！");
-          return;
-        }
-        const dice_expr = args[1]
-        const dice_target = args.length > 2 ? args[2] : null;
-        const dice = new Dice();
-        const result = dice.roll(dice_expr);
-        const reply = (dice_target != null ? '泉津的魔法骰子，目标是 ' + dice_target + '\n': '') + "投骰结果：" + dice_expr + ' = ' + result.total + '\n' + "骰值列表：" +result.renderedExpression.toString();
-        message.reply(reply);
+      const spell_name = args[1];
+      const spell = SearchDatabase(spell_name, spells_database);
+      const reply = spell.length == 0 ? 'Spell not found' : SpellDataFormatter(spell);
+      message.reply(reply);
+    }
+
+    if(m.startsWith('!dice')){
+      const args = m.split(' ');
+      if(args.length < 2){
+        message.reply("命令格式不正确！");
+        return;
       }
+      const dice_expr = args[1]
+      const dice_target = args.length > 2 ? args[2] : null;
+      const dice = new Dice();
+      const result = dice.roll(dice_expr);
+      const reply = (dice_target != null ? '泉津的魔法骰子，目标是 ' + dice_target + '\n': '') + "投骰结果：" + dice_expr + ' = ' + result.total + '\n' + "骰值列表：" +result.renderedExpression.toString();
+      message.reply(reply);
     }
   }
 });
