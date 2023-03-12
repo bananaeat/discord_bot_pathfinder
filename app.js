@@ -1,4 +1,5 @@
 import express from "express";
+import Dice from "dice"
 import {
   InteractionType,
   InteractionResponseType,
@@ -13,7 +14,7 @@ import {
   SearchDatabase,
   SpellDataFormatter
 } from "./utils.js"
-import { SPELL_COMMAND, TEST_COMMAND, HasGuildCommands } from "./commands.js";
+import { SPELL_COMMAND, TEST_COMMAND, DICE_COMMAND, HasGuildCommands } from "./commands.js";
 import { createRequire } from "module";
 
 
@@ -65,11 +66,26 @@ app.post("/interactions", async function (req, res) {
       // Send a message into the channel where command was triggered from
       const spell_name = data.options[0].value;
       const spell = SearchDatabase(spell_name, spells_database)
-      // console.log(SearchDatabase(spells_database, spell_name));
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
           content: spell.length == 0 ? 'Spell not found' : SpellDataFormatter(spell),
+        },
+      });
+    }
+    
+    if (name === "dice") {
+      // Send a message into the channel where command was triggered from
+      const dice_expr = data.options[0].value;
+      const dice_target = data.options.length > 1 ? data.options[1].value : null;
+      
+      const dice = new Dice();
+      const dice_outcome = dice.execute(dice_expr);
+      
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          content: dice_outcome.text + (dice_target != null ? ' ' + dice_target : '')
         },
       });
     }
@@ -83,5 +99,6 @@ app.listen(PORT, () => {
   HasGuildCommands(process.env.APP_ID, process.env.GUILD_ID, [
     TEST_COMMAND,
     SPELL_COMMAND,
+    DICE_COMMAND
   ]);
 });
