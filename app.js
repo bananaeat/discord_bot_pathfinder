@@ -85,7 +85,7 @@ app.post("/interactions", async function (req, res) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: (dice_target != null ? 'Result for ' + dice_target + '\n': '') + dice_expr + ' = ' + result.total + '\n' + result.renderedExpression.toString()
+          content: (dice_target != null ? '**Result for ' + dice_target + '**\n': '') + dice_expr + ' = ' + result.total + '\n' + result.renderedExpression.toString()
         },
       });
     }
