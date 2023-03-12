@@ -89,7 +89,7 @@ export function SpellDataFormatter(spellArray) {
     if(domain.length > 0)
       domain = domain.substring(0, domain.length-2)
 
-    spells += '<span style="color:blue">**' + spell['name'] + '**</span>\n' +
+    spells += '**' + spell['name'] + '**\n' +
             '**学派** ' + spell['school'] + (spell['subschool'] != '' ? '(' + spell['subschool'] + ')' : '') + 
                                            (spell['types'] != '' ? '[' + spell['types'] + ']' : '') + '\n' +
             (domain != '' ? '**领域** ' + domain + '\n' : '') + 
