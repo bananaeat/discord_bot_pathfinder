@@ -1,5 +1,5 @@
 import express from "express";
-import Dice from "dice"
+import { Dice } from "dice-typescript";
 import {
   InteractionType,
   InteractionResponseType,
@@ -80,12 +80,12 @@ app.post("/interactions", async function (req, res) {
       const dice_target = data.options.length > 1 ? data.options[1].value : null;
       
       const dice = new Dice();
-      const dice_outcome = dice.execute(dice_expr);
+      const result = dice.roll(dice_expr);
       
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: dice_outcome.text + (dice_target != null ? ' ' + dice_target : '')
+          content: (dice_target != null ? 'Result for ' + dice_target + '\n': '') + dice_expr + ' = ' + result.total + '\n' + result.renderedExpression.toString()
         },
       });
     }
