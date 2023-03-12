@@ -65,3 +65,23 @@ export const SPELL_COMMAND = {
     },
   ],
 };
+
+export const DICE_COMMAND = {
+  name: "dice",
+  description: "Roll a dice!",
+  type: 1,
+  options: [
+    {
+      name: "dice_expr",
+      description: "The expression for rolling dices",
+      type: 3,
+      required: true,
+    },
+    {
+      name: "target",
+      description: "why rolling dice",
+      type: 3,
+      required: false,
+    },
+  ],
+};
