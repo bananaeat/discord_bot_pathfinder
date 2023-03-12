@@ -89,20 +89,20 @@ export function SpellDataFormatter(spellArray) {
     if(domain.length > 0)
       domain = domain.substring(0, domain.length-2)
 
-    spells += '**' + spell['name'] + '**\n' +
-            '**学派** ' + spell['school'] + (spell['subschool'] != '' ? '(' + spell['subschool'] + ')' : '') + 
+    spells += spell['name'] + 'n' +
+            '学派 ' + spell['school'] + (spell['subschool'] != '' ? '(' + spell['subschool'] + ')' : '') + 
                                            (spell['types'] != '' ? '[' + spell['types'] + ']' : '') + '\n' +
-            (domain != '' ? '**领域** ' + domain + '\n' : '') + 
-            '**等级** ' + spell_level + '\n' +
-            '**动作** ' + spell['action']['cost'] + ' ' + spell['action']['type'] + '\n' +
-            '**成分** ' + components + '\n' +
-            '**距离** ' + range + '\n' +
-            (spell['area'] != '' ? '**范围** ' + spell['area'] + '\n' : '') + 
-            (spell['effect'] != '' ? '**效果** ' + spell['effect'] + '\n' : '') + 
-            (spell['target'] != '' ? '**目标** ' + spell['target'] + '\n' : '') +
-            '**持续时间** ' + spell['duration'] + '\n' + 
-            (spell['save'] != '' ? '**豁免** ' + spell['save'] + '\n' : '') + 
-            '**法术抗力** ' + (spell['sr'] != '' ? '可' : '否') + '\n' +
+            (domain != '' ? '领域 ' + domain + '\n' : '') + 
+            '等级 ' + spell_level + '\n' +
+            '动作 ' + spell['action']['cost'] + ' ' + spell['action']['type'] + '\n' +
+            '成分 ' + components + '\n' +
+            '距离 ' + range + '\n' +
+            (spell['area'] != '' ? '范围 ' + spell['area'] + '\n' : '') + 
+            (spell['effect'] != '' ? '效果 ' + spell['effect'] + '\n' : '') + 
+            (spell['target'] != '' ? '目标 ' + spell['target'] + '\n' : '') +
+            '持续时间 ' + spell['duration'] + '\n' + 
+            (spell['save'] != '' ? '豁免 ' + spell['save'] + '\n' : '') + 
+            '法术抗力 ' + (spell['sr'] != '' ? '可' : '否') + '\n' +
             spell['shortDescription'] + '\n\n';
   });
   return spells;
