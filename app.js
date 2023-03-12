@@ -16,6 +16,56 @@ import {
 } from "./utils.js"
 import { SPELL_COMMAND, TEST_COMMAND, DICE_COMMAND, HasGuildCommands } from "./commands.js";
 import { createRequire } from "module";
+import Discord from "discord.js";
+
+const client = new Discord.Client({
+	intents: [
+		1 << 0,
+		1 << 1,
+    1 << 9,
+    1 << 12,
+		1 << 15,
+	],
+});
+
+client.on("messageCreate", message => {
+  if(message.author.bot == false){
+    const m = message.content;
+    if(m.startsWith('!')){
+      if(m.startsWith('!spell')){
+        const args = m.split(' ');
+        if(args.length < 2){
+          message.reply("命令格式不正确！");
+          return;
+        }
+        const spell_name = args[1];
+        const spell = SearchDatabase(spell_name, spells_database);
+        const reply = spell.length == 0 ? 'Spell not found' : SpellDataFormatter(spell);
+        message.reply(reply);
+      }
+      
+      if(m.startsWith('!dice')){
+        const args = m.split(' ');
+        if(args.length < 2){
+          message.reply("命令格式不正确！");
+          return;
+        }
+        const dice_expr = args[1]
+        const dice_target = args.length > 2 ? args[2] : null;
+        const dice = new Dice();
+        const result = dice.roll(dice_expr);
+        const reply = (dice_target != null ? '泉津的魔法骰子，目标是 ' + dice_target + '\n': '') + "投骰结果：" + dice_expr + ' = ' + result.total + '\n' + "骰值列表：" +result.renderedExpression.toString();
+        message.reply(reply);
+      }
+    }
+  }
+});
+
+client.on("ready", () => {
+  console.log("Logged in as " + client.user.tag + "!");
+});
+
+client.login(process.env.DISCORD_TOKEN);
 
 
 
@@ -85,7 +135,7 @@ app.post("/interactions", async function (req, res) {
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
         data: {
-          content: (dice_target != null ? '**Result for ' + dice_target + '**\n': '') + dice_expr + ' = ' + result.total + '\n' + result.renderedExpression.toString()
+          content: (dice_target != null ? '泉津的魔法骰子，目标是 ' + dice_target + '\n': '') + "投骰结果：" + dice_expr + ' = ' + result.total + '\n' + "骰值列表：" +result.renderedExpression.toString()
         },
       });
     }

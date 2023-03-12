@@ -49,7 +49,7 @@ export function SearchDatabase(key, database) {
 }
 
 export function SpellDataFormatter(spellArray) {
-  var spells = ""
+  var spells = "泉津的法术大全检索：\n\n"
   spellArray.slice(0, 5).forEach(function(spell){
     //String for spell level
     var spell_level = "";
