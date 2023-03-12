@@ -72,18 +72,18 @@ export function SpellDataFormatter(spellArray) {
 
     //String for range
     var range = "";
-    if(spell['range']['units'] == 'touch' || spell['range']['units'] == 'personal' ||
-       spell['range']['units'] == 'close' || spell['range']['units'] == 'medium' || spell['range']['units'] == 'long')
+    if(spell['range']['value'] == null)
       range = spell['range']['units']
     else
       range = spell['range']['value'] + ' ' + spell['range']['units']
 
-    spells += spell['name'] + '\n' +
+    spells += '**' + spell['name'] + '**\n' +
             '**学派** ' + spell['school'] + '\n' +
             '**等级** ' + spell_level + '\n' +
             '**动作** ' + spell['action']['cost'] + ' ' + spell['action']['type'] + '\n' +
             '**成分** ' + components + '\n' +
             '**距离** ' + range + '\n' +
+            (spell['area'] != '' ? '**范围** ' + spell['area'] + '\n' : '') + 
             (spell['effect'] != '' ? '**效果** ' + spell['effect'] + '\n' : '') + 
             (spell['target'] != '' ? '**目标** ' + spell['target'] + '\n' : '') +
             '**持续时间** ' + spell['duration'] + '\n' + 
