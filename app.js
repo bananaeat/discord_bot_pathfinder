@@ -37,7 +37,7 @@ client.on("messageCreate", message => {
         message.reply("命令格式不正确！");
         return;
       }
-      const spell_name = args[1];
+      const spell_name = m.substring(7);
       const spell = SearchDatabase(spell_name, spells_database);
       const reply = spell.length == 0 ? 'Spell not found' : SpellDataFormatter(spell);
       message.reply(reply);
