@@ -61,6 +61,11 @@ client.on("messageCreate", message => {
 
 client.on("ready", () => {
   console.log("Logged in as " + client.user.tag + "!");
+  
+  setInterval(() => {
+    client.user.setStatus('TRPGing');
+    client.user.setActivity(`和群友们`, {type: '玩耍'}); 
+  }, 10000);
 });
 
 client.login(process.env.DISCORD_TOKEN);
