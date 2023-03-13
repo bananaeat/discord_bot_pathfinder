@@ -15,6 +15,7 @@ import {
   SpellDataFormatter
 } from "./utils.js"
 import { SPELL_COMMAND, TEST_COMMAND, DICE_COMMAND, HasGuildCommands } from "./commands.js";
+import { getValue, updateValue, actOnValue } from "./dbutils.js"
 import { createRequire } from "module";
 import Discord from "discord.js";
 
@@ -55,6 +56,41 @@ client.on("messageCreate", message => {
       const result = dice.roll(dice_expr);
       const reply = (dice_target != null ? '泉津的魔法骰子，目标是 ' + dice_target + '\n': '') + "投骰结果：" + dice_expr + ' = ' + result.total + '\n' + "骰值列表：" +result.renderedExpression.toString();
       message.reply(reply);
+    }
+    
+    if(m.startsWith('!ri')){
+      const args = m.split(' ');
+      const ri_expr = args[0].substring(2)
+      const ri_target = args.length > 1 ? args[1] : null;
+      const dice_expr = "d20" + ri_expr;
+      const dice_target = args.length > 2 ? args[2] : null;
+      const dice = new Dice();
+      const result = dice.roll(dice_expr);
+      const init_list = JSON.parse(getValue("init"));
+      const init_instance = {username: message.author.username, charname: message.author.username, init_value: result.total};
+      init_list.push(init_instance);
+      updateValue("init", JSON.stringify(init_list));
+      const reply = "泉津的先攻更新，" + ri_target == null ? message.author.username : ri_target + "的先攻结果：" + dice_expr + " = " + result.total;
+      message.reply(reply);
+    }
+    
+    if(m.startsWith('!init')){
+      const args = m.split(' ');
+      const init_target = args.length > 1 ? args[1] : null;
+      if(init_target == "list"){
+        const init_list = JSON.parse(getValue("init"));
+        const reply = "泉津的先攻记录：\n";
+        init_list.forEach(function(ins){
+          reply += ins.charname + ": " + ins.init_value + "\n";
+        })
+        message.reply(reply);
+        return;
+      }
+      if(init_target == "clear"){
+        updateValue("init", "[]");
+        message.reply("先攻记录清理完成！");
+        return;
+      }
     }
   }
 });
